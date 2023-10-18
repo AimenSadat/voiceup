@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  app:
+    # Build the app service using the Dockerfile in the app directory
+    build:
+      context: ./app
+      dockerfile: Dockerfile
+    ports:
+      - 8501:8501
+    volumes:
+      - shared_data:/app/db
+
+  db:
+    # Build the database service using the Dockerfile in the db directory
+    build:
+      context: ./db
+      dockerfile: Dockerfile
+    # Define a volume for PostgreSQL data
+    volumes:
+      - ./db/storage/lottiefiles:/db/storage/lottiefiles
+      - shared_data:/db
+      - db_data:/var/lib/postgresql/data
+
+# Define the named volume for PostgreSQL data
+volumes:
+  shared_data:
+  db_data:
